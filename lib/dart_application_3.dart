@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:dart_application_3/controllers/app_finance_controller.dart';
+import 'package:dart_application_3/controllers/app_journal_controller.dart';
 import 'package:dart_application_3/controllers/app_token_controller.dart';
 import 'package:dart_application_3/controllers/app_user_controller.dart';
 
@@ -29,6 +30,9 @@ class AppService extends ApplicationChannel {
     ..route('user')
     .link(AppTokenController.new)!
     .link(() => AppUserController(managedContext))
+    ..route('journal')
+    .link(AppTokenController.new)!
+    .link(() => JournalController(managedContext))
     ..route('finance/[:id]')
     .link(AppTokenController.new)!
     .link(() => FinanceController(managedContext));

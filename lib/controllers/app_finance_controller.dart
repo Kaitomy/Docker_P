@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:conduit/conduit.dart';
 import 'package:dart_application_3/model/finance.dart';
+import 'package:dart_application_3/model/journal.dart';
 import 'package:dart_application_3/model/user.dart';
 import 'package:dart_application_3/utils/app_response.dart';
 import 'package:dart_application_3/utils/app_utils.dart';
@@ -28,6 +29,7 @@ class FinanceController extends ResourceController {
         ..values.description = finance.description
         ..values.summ = finance.summ
         ..values.category!.id = finance.category!.id;
+       
       final newFinance = await qCreateFinance.insert();
       newFinance.removePropertyFromBackingMap('user');
 
@@ -80,16 +82,52 @@ class FinanceController extends ResourceController {
       if (fim.user?.id != userId) {
         return AppResponse.ok(message: 'Нельзя редактировать не вашу справку');
       }
-
+if(fim.logicalDel == 0){
       final qUpdateFinance = Query<Finance>(managedContext)
         ..where((x) => x.id).equalTo(id)
         ..values.description = bodyFinance.description ?? fim.description
         ..values.financeName = bodyFinance.financeName ?? fim.financeName
         ..values.summ = bodyFinance.summ ?? fim.summ;
-        await qUpdateFinance.update();
+      await qUpdateFinance.update();
+}
+else {return AppResponse.ok(message: 'Данная сводка удалена');}
+      return AppResponse.ok(message: 'Финансовая сводка успешно обновлена');
+    } catch (e) {
+      return AppResponse.serverError(e);
+    }
+  }
 
-      return AppResponse.ok(
-         message: 'Финансовая сводка успешно обновлена');
+  //логическое удаление
+  @Operation.post("id")
+  Future<Response> logFinance(
+      @Bind.header(HttpHeaders.authorizationHeader) String header,
+      @Bind.path('id') int id,
+      @Bind.query('action') int action,
+      @Bind.body() Finance bodyFinance) async {
+    try {
+      final userId = AppUtils.getIdFromHeader(header);
+      final fim = await managedContext.fetchObjectWithID<Finance>(id);
+      if (fim == null) {
+        return AppResponse.ok(message: 'Финансы не найдены');
+      }
+      if (fim.user?.id != userId) {
+        return AppResponse.ok(message: 'Нельзя редактировать не вашу справку');
+      }
+      if (action == 0 || action == 1) {
+        final qlogFinance = Query<Finance>(managedContext)
+          ..where((x) => x.id).equalTo(id)
+          ..values.logicalDel = action;
+        await qlogFinance.update();
+      }
+       if (action == 0 ) {
+        return AppResponse.ok(message: 'Данная финансовая сводка восстановлена');
+       }
+       else if (action == 1 ) {
+        return AppResponse.ok(message: 'Данная финансовая сводка удалена');
+       }
+      else {  return AppResponse.ok(message: 'Данная функция пока не доступна');
+  }
+      
     } catch (e) {
       return AppResponse.serverError(e);
     }
@@ -138,24 +176,27 @@ class FinanceController extends ResourceController {
       @Bind.query('skipRows') int skipRows = 0}) async {
     try {
       final id = AppUtils.getIdFromHeader(header);
-      final qGetFinance= Query<Finance>(managedContext)
+      final qGetFinance = Query<Finance>(managedContext)
         ..fetchLimit = pageLimit
         ..offset = pageLimit * skipRows
         ..where((x) => x.user!.id).equalTo(id)
+        ..where((x) => x.logicalDel).equalTo(0)
         ..where((x) => x.financeName).contains(str, caseSensitive: false)
         ..join(object: (x) => x.user)
         ..join(object: (x) => x.category);
       final List<Finance> finances = await qGetFinance.fetch();
       if (finances.isEmpty) {
-        return AppResponse.ok( message: 'Не найдено финансовых справок');
+        return AppResponse.ok(message: 'Не найдено финансовых справок');
       }
 
       for (var finance in finances) {
+
         finance.removePropertyFromBackingMap('user');
       }
 
       return AppResponse.ok(
-          body: finances, message: 'Финансовые справки, созданные данным пользователем');
+          body: finances,
+          message: 'Финансовые справки, созданные данным пользователем');
     } catch (e) {
       return AppResponse.serverError(e);
     }
