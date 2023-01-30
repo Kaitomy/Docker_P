@@ -18,7 +18,7 @@ class _Finance {
   DateTime? date;
    @Column()
   int? summ;
-  @Column(nullable: true)
+  @Column(nullable: true,defaultValue: '0')
   int? logicalDel;
   @Relate(#financesList,isRequired: true,onDelete: DeleteRule.cascade)
   Categories? category;

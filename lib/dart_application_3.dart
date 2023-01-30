@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:dart_application_3/controllers/app_finance_controller.dart';
 import 'package:dart_application_3/controllers/app_token_controller.dart';
 import 'package:dart_application_3/controllers/app_user_controller.dart';
 
@@ -28,7 +29,9 @@ class AppService extends ApplicationChannel {
     ..route('user')
     .link(AppTokenController.new)!
     .link(() => AppUserController(managedContext))
-    ;
+    ..route('finance/[:id]')
+    .link(AppTokenController.new)!
+    .link(() => FinanceController(managedContext));
 //тут может быть ошибка
   PersistentStore _initDatebase() {
     final username = Platform.environment['DB_USERNAME'] ?? 'postgres';
