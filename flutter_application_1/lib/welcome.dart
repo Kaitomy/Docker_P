@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/utils/auth_dio_utils.dart';
 import 'dart:io';
 
 import 'package:path/path.dart';
@@ -72,10 +73,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   GlobalKey<FormState> _key = GlobalKey();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  TextEditingController _nicknameController = TextEditingController();
+  TextEditingController _userNameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _nicknameController2 = TextEditingController();
+    TextEditingController _userNameController2 = TextEditingController();
   TextEditingController _passwordController2 = TextEditingController();
 
   bool isObscure = true;
@@ -89,7 +89,20 @@ class _MyHomePageState extends State<MyHomePage> {
 
     void signIn() async {
      
-      
+      final AuthDioUtils auth = AuthDioUtils();
+     var result = await auth.Auth(_userNameController.text, _passwordController.text);
+     String f = result.toString();
+      if (f.contains("true") == true ) {
+          const snackBar = SnackBar(
+          content: Text('Authorization true'),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } else {
+        const snackBar = SnackBar(
+          content: Text('Authorization failed'),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
      
     }
 
@@ -102,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <
                 Widget>[
           SizedBox(height: 20.0),
-          const Text('Shop',
+          const Text('Finance',
               textAlign: TextAlign.center, style: TextStyle(fontSize: 22)),
           DefaultTabController(
               length: 2, // length of tabs
@@ -150,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 16),
                                   child: TextFormField(
-                                    controller: _nicknameController,
+                                    controller: _userNameController2,
                                     decoration: const InputDecoration(
                                       border: UnderlineInputBorder(),
                                       labelText: 'Введите никнейм',
@@ -161,10 +174,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 16),
                                   child: TextFormField(
-                                    controller: _emailController,
+                                    controller: _passwordController2,
                                     decoration: const InputDecoration(
                                       border: UnderlineInputBorder(),
-                                      labelText: 'Введите email',
+                                      labelText: 'Введите пароль',
                                     ),
                                   ),
                                 ),
@@ -173,7 +186,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       horizontal: 8, vertical: 16),
                                   child: TextFormField(
                                     obscureText: true,
-                                    controller: _passwordController,
+                                    controller: _passwordController2,
                                     decoration: const InputDecoration(
                                       border: UnderlineInputBorder(),
                                       labelText: 'Введите пароль',
@@ -188,13 +201,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                     child: ElevatedButton(
                                       onPressed: () {
                                         if ((usernameValidator(
-                                                    _nicknameController.text) ==
+                                                    _userNameController.text) ==
                                                 true) &
                                             (passwordValidator(
                                                     _passwordController.text) ==
                                                 true) &
                                             (emailValidator(
-                                                    _emailController.text) ==
+                                                    _passwordController.text) ==
                                                 true)) {
                                           signUp();
                                           const snackBar2 = SnackBar(
@@ -255,7 +268,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 8, vertical: 16),
                                     child: TextFormField(
-                                      controller: _nicknameController2,
+                                      controller: _userNameController,
                                       decoration: const InputDecoration(
                                         border: UnderlineInputBorder(),
                                         labelText: 'Введите никнейм',
@@ -266,7 +279,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 8, vertical: 16),
                                     child: TextFormField(
-                                      controller: _passwordController2,
+                                      controller: _passwordController,
                                       obscureText: true,
                                       decoration: const InputDecoration(
                                         border: UnderlineInputBorder(),

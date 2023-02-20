@@ -21,7 +21,7 @@ class AuthDioUtils {
     
     dio = new Dio(
       BaseOptions(
-          baseUrl: "http://localhost:8889",
+          baseUrl: "http://192.168.1.2:8889",
           connectTimeout: const Duration(milliseconds: 3500),
           receiveTimeout: const Duration(milliseconds: 3500),
           sendTimeout: const Duration(milliseconds: 3500)),
@@ -42,14 +42,17 @@ class AuthDioUtils {
       }
       else {return false;}
     } on DioError catch (error) {
-      print(error.response!.statusCode);
+      print(error.response!.data);
+       print(error.response!.statusCode);
+        print(error.response!.statusMessage);
       return false;
     }
   }
 
    Future<bool> changeProfile(String userName, String email, String oldPassword, String newPassword) async {
     try {
-      dio.options.headers['Authorization'] = sharedPreferences!.getString('accessToken');
+      String? token = sharedPreferences!.getString('accessToken');
+      dio.options.headers['Authorization'] = "Bearer $token";
       final response = await dio.post("/user",
           data: Map.from({'userName': userName, 'email': email}));  
       if (newPassword != "") {
@@ -58,8 +61,20 @@ class AuthDioUtils {
       if (response.statusCode == 200 ) { return true;}
      else { return false;}
     } on DioError catch (error) {
-      print(error.response!.statusCode);
+      //print(error.response!.statusCode);
       return false;
     }
    }
+
+    Future<User> getUser() async{
+    try {
+      String? token = sharedPreferences!.getString('accessToken');
+       dio.options.headers['Authorization'] = "Bearer $token";
+      final response = await dio.get("/user");
+      User user = User.fromJson(response.data["data"]);
+      return user;
+    } on DioError catch(error) {
+      return User(email: "", password: "", userName: "");
+    }
+  }
 }
