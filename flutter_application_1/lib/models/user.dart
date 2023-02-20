@@ -7,7 +7,7 @@ part 'user.g.dart';
 class User with _$User {
   const factory User(
       {
-        required String userName,
+      required String userName,
       required String email,
       required String password
       }) = _User;
