@@ -77,14 +77,27 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController _passwordController = TextEditingController();
     TextEditingController _userNameController2 = TextEditingController();
   TextEditingController _passwordController2 = TextEditingController();
-
+TextEditingController _emailController2 = TextEditingController();
   bool isObscure = true;
 
   @override
   Widget build(BuildContext context) {
     void signUp() async {
-      
-      
+       final AuthDioUtils regist = AuthDioUtils();
+     var result =  await regist.Register(_userNameController2.text,_passwordController2.text,_emailController2.text,
+      );
+      String f = result.toString();
+      if (f.contains("true") == true ) {
+          const snackBar = SnackBar(
+          content: Text('Register true'),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } else {
+        const snackBar = SnackBar(
+          content: Text('Register failed'),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
     }
 
     void signIn() async {
@@ -174,6 +187,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 16),
                                   child: TextFormField(
+                                    obscureText: true,
                                     controller: _passwordController2,
                                     decoration: const InputDecoration(
                                       border: UnderlineInputBorder(),
@@ -185,11 +199,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 16),
                                   child: TextFormField(
-                                    obscureText: true,
-                                    controller: _passwordController2,
+                                    controller: _emailController2,
                                     decoration: const InputDecoration(
                                       border: UnderlineInputBorder(),
-                                      labelText: 'Введите пароль',
+                                      labelText: 'Введите email',
                                     ),
                                   ),
                                 ),
@@ -201,27 +214,17 @@ class _MyHomePageState extends State<MyHomePage> {
                                     child: ElevatedButton(
                                       onPressed: () {
                                         if ((usernameValidator(
-                                                    _userNameController.text) ==
+                                                    _userNameController2.text) ==
                                                 true) &
                                             (passwordValidator(
-                                                    _passwordController.text) ==
+                                                    _passwordController2.text) ==
                                                 true) &
                                             (emailValidator(
-                                                    _passwordController.text) ==
+                                                    _emailController2.text) ==
                                                 true)) {
                                           signUp();
-                                          const snackBar2 = SnackBar(
-                                            content: Text('Welcome!!!'),
-                                          );
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(snackBar2);
-                                        } else {
-                                          const snackBar = SnackBar(
-                                            content: Text('Error!'),
-                                          );
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(snackBar);
-                                        }
+                                          
+                                        } 
                                       },
                                       style: ButtonStyle(
                                           backgroundColor:
