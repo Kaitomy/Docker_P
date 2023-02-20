@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter_application_1/interceptors/auth_interceptor.dart';
+import 'package:flutter_application_1/models/finance.dart';
 import 'package:flutter_application_1/models/user.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,11 +12,13 @@ class AuthDioUtils {
   SharedPreferences? sharedPreferences;
 
   AuthDioUtils() {
+    _share().then;
     _connectDio();
-   _share();
+  
   }
 
   Future<void> _share() async {
+    
     sharedPreferences = await SharedPreferences.getInstance();
   }
 
@@ -38,6 +43,8 @@ class AuthDioUtils {
       if (response.statusCode == 200) {
         sharedPreferences!.setString("accessToken", response.data["data"]["accessToken"]);
         sharedPreferences!.setString("refreshToken", response.data["data"]["refreshToken"]);
+        print(sharedPreferences!.getString('accessToken'));
+     
         return true;
       }
       else {return false;}
@@ -51,8 +58,9 @@ class AuthDioUtils {
 
    Future<bool> changeProfile(String userName, String email, String oldPassword, String newPassword) async {
     try {
-      String? token = sharedPreferences!.getString('accessToken');
-      dio.options.headers['Authorization'] = "Bearer $token";
+      
+    //  String? token = sharedPreferences!.getString('accessToken');
+    //  dio.options.headers['Authorization'] = "Bearer $token";
       final response = await dio.post("/user",
           data: {'userName': userName, 'email': email});  
       if (newPassword != "") {
@@ -68,13 +76,13 @@ class AuthDioUtils {
 
     Future<User> getUser() async{
     try {
-     String? token = sharedPreferences!.getString('accessToken');
-       dio.options.headers['Authorization'] = "Bearer $token";
+    //  String? token = sharedPreferences!.getString('accessToken');
+    //    dio.options.headers['Authorization'] = "Bearer $token";
       final response = await dio.get("/user");
       User user = User.fromJson(response.data["data"]);
       return user;
     } on DioError catch(error) {
-      return User(email: "", password: "", userName: "");
+      return const User(email: "", password: "", userName: "");
     }
   }
 
@@ -93,7 +101,5 @@ Future<bool> Register(String userName, String password, String email) async {
       return false;
     }
   }
-
-
 
 }

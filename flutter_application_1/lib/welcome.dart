@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/home.dart';
 import 'package:flutter_application_1/utils/auth_dio_utils.dart';
 import 'dart:io';
 
 import 'package:path/path.dart';
-
 
 class Welcome extends StatefulWidget {
   const Welcome({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class MyApp extends State<Welcome> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Shop',
+      title: 'Finance',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.brown,
@@ -75,20 +75,23 @@ class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   TextEditingController _userNameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-    TextEditingController _userNameController2 = TextEditingController();
+  TextEditingController _userNameController2 = TextEditingController();
   TextEditingController _passwordController2 = TextEditingController();
-TextEditingController _emailController2 = TextEditingController();
+  TextEditingController _emailController2 = TextEditingController();
   bool isObscure = true;
 
   @override
   Widget build(BuildContext context) {
     void signUp() async {
-       final AuthDioUtils regist = AuthDioUtils();
-     var result =  await regist.Register(_userNameController2.text,_passwordController2.text,_emailController2.text,
+      final AuthDioUtils regist = AuthDioUtils();
+      var result = await regist.Register(
+        _userNameController2.text,
+        _passwordController2.text,
+        _emailController2.text,
       );
       String f = result.toString();
-      if (f.contains("true") == true ) {
-          const snackBar = SnackBar(
+      if (f.contains("true") == true) {
+        const snackBar = SnackBar(
           content: Text('Register true'),
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -101,27 +104,25 @@ TextEditingController _emailController2 = TextEditingController();
     }
 
     void signIn() async {
-     
       final AuthDioUtils auth = AuthDioUtils();
-     var result = await auth.Auth(_userNameController.text, _passwordController.text);
-     String f = result.toString();
-      if (f.contains("true") == true ) {
-          const snackBar = SnackBar(
-          content: Text('Authorization true'),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      var result =
+          await auth.Auth(_userNameController.text, _passwordController.text);
+      String f = result.toString();
+      if (f.contains("true") == true) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Home()));
       } else {
         const snackBar = SnackBar(
           content: Text('Authorization failed'),
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
-     
     }
 
     return Scaffold(
-
-      body: Container(
+      body:
+      SingleChildScrollView(
+        child: Container(
         decoration:
             const BoxDecoration(color: Color.fromARGB(248, 97, 172, 79)),
         child:
@@ -213,18 +214,16 @@ TextEditingController _emailController2 = TextEditingController();
                                         left: 25, right: 25),
                                     child: ElevatedButton(
                                       onPressed: () {
-                                        if ((usernameValidator(
-                                                    _userNameController2.text) ==
-                                                true) &
+                                        if ((usernameValidator(_userNameController2.text) == true) &
                                             (passwordValidator(
-                                                    _passwordController2.text) ==
+                                                    _passwordController2
+                                                        .text) ==
                                                 true) &
                                             (emailValidator(
                                                     _emailController2.text) ==
                                                 true)) {
                                           signUp();
-                                          
-                                        } 
+                                        }
                                       },
                                       style: ButtonStyle(
                                           backgroundColor:
@@ -327,6 +326,7 @@ TextEditingController _emailController2 = TextEditingController();
                         ]))
                   ])),
         ]),
+      ),
       ),
     );
   }
