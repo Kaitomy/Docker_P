@@ -1,3 +1,4 @@
+
 import 'dart:convert';
   
 import 'package:flutter/material.dart';
@@ -68,7 +69,7 @@ var jsonList;
         centerTitle: true,
       ),
       body: ListView.builder(
-          itemCount: jsonList == null ? 0 : jsonList!.length + 1,
+          itemCount: jsonList == null ? 0 : jsonList['data'].length,
           itemBuilder: (BuildContext context, int index) {
             return Card(
                 child: ListTile(
