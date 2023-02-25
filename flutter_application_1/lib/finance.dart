@@ -177,7 +177,7 @@ var jsonList;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Мои финансовые сводки',
+          'Мои сводки',
           style: TextStyle(color: Colors.white),  
         ),
         actions: [

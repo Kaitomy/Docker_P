@@ -152,7 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     Container(
-                        height: 600, //height of TabBarView
+                        height: 700, //height of TabBarView
                         decoration: const BoxDecoration(
                             border: Border(
                                 top: BorderSide(

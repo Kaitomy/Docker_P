@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/addfinance.dart';
 import 'package:flutter_application_1/welcome.dart';
 import 'package:flutter_application_1/finance.dart';
 
@@ -14,7 +15,7 @@ class _BottomNavigationBarState extends State<Home> {
   int currentIndex = 0;
 
   final List<Widget> pages = [
-    Welcome(),
+    AddFinance(),
     FinancePage(),
     FinancePage()
   ];
@@ -24,7 +25,7 @@ class _BottomNavigationBarState extends State<Home> {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Главная"),
+          BottomNavigationBarItem(icon: Icon(Icons.add), label: "Главная"),
           BottomNavigationBarItem(
               icon: Icon(Icons.create_outlined), label: "Финансы"),
           BottomNavigationBarItem(
