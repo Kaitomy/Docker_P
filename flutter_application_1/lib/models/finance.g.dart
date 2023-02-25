@@ -7,6 +7,7 @@ part of 'finance.dart';
 // **************************************************************************
 
 _$_Finance _$$_FinanceFromJson(Map<String, dynamic> json) => _$_Finance(
+      id: json['id'] as int,
       financeName: json['financeName'] as String,
       description: json['description'] as String,
       date: DateTime.parse(json['date'] as String),
@@ -17,6 +18,7 @@ _$_Finance _$$_FinanceFromJson(Map<String, dynamic> json) => _$_Finance(
 
 Map<String, dynamic> _$$_FinanceToJson(_$_Finance instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'financeName': instance.financeName,
       'description': instance.description,
       'date': instance.date.toIso8601String(),

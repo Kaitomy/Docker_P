@@ -7,6 +7,7 @@ part 'finance.g.dart';
 class Finance with _$Finance {
   const factory Finance(
       {
+      required int id,
       required String financeName,
       required String description,
       required DateTime date,

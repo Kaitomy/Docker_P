@@ -20,6 +20,7 @@ Finance _$FinanceFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Finance {
+  int get id => throw _privateConstructorUsedError;
   String get financeName => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   DateTime get date => throw _privateConstructorUsedError;
@@ -38,7 +39,8 @@ abstract class $FinanceCopyWith<$Res> {
       _$FinanceCopyWithImpl<$Res, Finance>;
   @useResult
   $Res call(
-      {String financeName,
+      {int id,
+      String financeName,
       String description,
       DateTime date,
       int summ,
@@ -59,6 +61,7 @@ class _$FinanceCopyWithImpl<$Res, $Val extends Finance>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? financeName = null,
     Object? description = null,
     Object? date = null,
@@ -67,6 +70,10 @@ class _$FinanceCopyWithImpl<$Res, $Val extends Finance>
     Object? category = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       financeName: null == financeName
           ? _value.financeName
           : financeName // ignore: cast_nullable_to_non_nullable
@@ -103,7 +110,8 @@ abstract class _$$_FinanceCopyWith<$Res> implements $FinanceCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String financeName,
+      {int id,
+      String financeName,
       String description,
       DateTime date,
       int summ,
@@ -121,6 +129,7 @@ class __$$_FinanceCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? financeName = null,
     Object? description = null,
     Object? date = null,
@@ -129,6 +138,10 @@ class __$$_FinanceCopyWithImpl<$Res>
     Object? category = null,
   }) {
     return _then(_$_Finance(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       financeName: null == financeName
           ? _value.financeName
           : financeName // ignore: cast_nullable_to_non_nullable
@@ -161,7 +174,8 @@ class __$$_FinanceCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Finance implements _Finance {
   const _$_Finance(
-      {required this.financeName,
+      {required this.id,
+      required this.financeName,
       required this.description,
       required this.date,
       required this.summ,
@@ -171,6 +185,8 @@ class _$_Finance implements _Finance {
   factory _$_Finance.fromJson(Map<String, dynamic> json) =>
       _$$_FinanceFromJson(json);
 
+  @override
+  final int id;
   @override
   final String financeName;
   @override
@@ -186,7 +202,7 @@ class _$_Finance implements _Finance {
 
   @override
   String toString() {
-    return 'Finance(financeName: $financeName, description: $description, date: $date, summ: $summ, logicalDel: $logicalDel, category: $category)';
+    return 'Finance(id: $id, financeName: $financeName, description: $description, date: $date, summ: $summ, logicalDel: $logicalDel, category: $category)';
   }
 
   @override
@@ -194,6 +210,7 @@ class _$_Finance implements _Finance {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Finance &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.financeName, financeName) ||
                 other.financeName == financeName) &&
             (identical(other.description, description) ||
@@ -208,8 +225,8 @@ class _$_Finance implements _Finance {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, financeName, description, date, summ, logicalDel, category);
+  int get hashCode => Object.hash(runtimeType, id, financeName, description,
+      date, summ, logicalDel, category);
 
   @JsonKey(ignore: true)
   @override
@@ -227,7 +244,8 @@ class _$_Finance implements _Finance {
 
 abstract class _Finance implements Finance {
   const factory _Finance(
-      {required final String financeName,
+      {required final int id,
+      required final String financeName,
       required final String description,
       required final DateTime date,
       required final int summ,
@@ -236,6 +254,8 @@ abstract class _Finance implements Finance {
 
   factory _Finance.fromJson(Map<String, dynamic> json) = _$_Finance.fromJson;
 
+  @override
+  int get id;
   @override
   String get financeName;
   @override
