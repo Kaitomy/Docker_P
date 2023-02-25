@@ -3,6 +3,7 @@ import 'dart:convert';
   
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_application_1/editfinance.dart';
 import 'package:flutter_application_1/models/finance.dart';
 import 'package:flutter_application_1/utils/auth_dio_utils.dart';
   
@@ -181,7 +182,13 @@ var jsonList;
           style: TextStyle(color: Colors.white),  
         ),
         actions: [
-          
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: ( ) {
+               Navigator.push(
+            context, MaterialPageRoute(builder: (context) => EditFinance()));
+            },
+          ),
            IconButton(
             icon: const Icon(Icons.assignment_turned_in_outlined),
             onPressed: ( ) {

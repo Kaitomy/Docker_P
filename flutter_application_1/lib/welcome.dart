@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/cubits/user_cubit.dart';
 import 'package:flutter_application_1/home.dart';
 import 'package:flutter_application_1/utils/auth_dio_utils.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:io';
 
 import 'package:path/path.dart';
@@ -17,15 +19,19 @@ class MyApp extends State<Welcome> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Finance',
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (BuildContext context) => UserCubit()),
+        ],
+     child: MaterialApp(
+       title: 'Finance',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.brown,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(),
-    );
+    ));
   }
 }
 

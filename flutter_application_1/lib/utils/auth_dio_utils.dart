@@ -61,6 +61,7 @@ class AuthDioUtils {
           data: {'userName': userName, 'email': email});  
       if (newPassword != "") {
         final response_pass = await dio.put("/user", queryParameters: {"oldPassword": oldPassword, "newPassword": newPassword});
+        print(response_pass.statusCode);
       }
       if (response.statusCode == 200 ) { return true;}
      else { return false;}

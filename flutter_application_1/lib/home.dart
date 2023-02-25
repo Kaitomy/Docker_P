@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/addfinance.dart';
+import 'package:flutter_application_1/profile.dart';
 import 'package:flutter_application_1/welcome.dart';
 import 'package:flutter_application_1/finance.dart';
 
@@ -17,7 +18,7 @@ class _BottomNavigationBarState extends State<Home> {
   final List<Widget> pages = [
     AddFinance(),
     FinancePage(),
-    FinancePage()
+    ProfileScreen()
   ];
 
   @override
