@@ -44,8 +44,8 @@ class AppUserController extends ResourceController {
       findUser!.removePropertiesFromBackingMap(['refreshToken', 'accessToken']);
 
       return AppResponse.ok(
-        message: 'Успешное обновление данных',
-        body: findUser.backing.contents);
+          message: 'Успешное обновление данных',
+          body: findUser.backing.contents);
     } catch (e) {
       return AppResponse.serverError(e, message: 'Ошибка обновления данных');
     }
@@ -55,14 +55,13 @@ class AppUserController extends ResourceController {
   Future<Response> updatePassword(
       @Bind.header(HttpHeaders.authorizationHeader) String header,
       @Bind.query('newPassword') String newPassword,
-      @Bind.query('oldPassword') String oldPassword
-      ) async {
+      @Bind.query('oldPassword') String oldPassword) async {
     try {
       final id = AppUtils.getIdFromHeader(header);
       final qFindUser = Query<User>(managedContext)
         ..where((element) => element.id).equalTo(id)
         ..returningProperties(
-          (element) => [element.salt, element.hashPassword]);
+            (element) => [element.salt, element.hashPassword]);
       final fUser = await qFindUser.fetchOne();
 
       final oldHashPassword =
@@ -77,7 +76,8 @@ class AppUserController extends ResourceController {
       final qUpdateUser = Query<User>(managedContext)
         ..where((x) => x.id).equalTo(id)
         ..values.hashPassword = newHashPassword;
-      await qUpdateUser.fetchOne();
+      
+      await qUpdateUser.updateOne();
 
       return AppResponse.ok(message: 'Пароль успешно обновлен');
     } catch (e) {

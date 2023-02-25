@@ -8,10 +8,10 @@ class Journal extends ManagedObject<_Journal> implements _Journal {
 class _Journal {
   @primaryKey
   int? id;
-   @Column()
+  @Column()
   String? action;
-   @Column(defaultValue: 'now()')
+  @Column(defaultValue: 'now()')
   DateTime? date;
-  @Relate(#journalList,isRequired: true,onDelete: DeleteRule.cascade)
+  @Relate(#journalList, isRequired: true, onDelete: DeleteRule.cascade)
   Finance? finance;
 }

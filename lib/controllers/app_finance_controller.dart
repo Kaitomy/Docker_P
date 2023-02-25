@@ -102,8 +102,7 @@ else {return AppResponse.ok(message: 'Данная сводка удалена')
   Future<Response> logFinance(
       @Bind.header(HttpHeaders.authorizationHeader) String header,
       @Bind.path('id') int id,
-      @Bind.query('action') int action,
-      @Bind.body() Finance bodyFinance) async {
+      @Bind.query('action') int action) async {
     try {
       final userId = AppUtils.getIdFromHeader(header);
       final fim = await managedContext.fetchObjectWithID<Finance>(id);
