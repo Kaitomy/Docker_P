@@ -52,13 +52,7 @@ class _EditFinanceState extends State<EditFinance> {
       print(e);
     }
   }
-void rebuildAllChildren(BuildContext context) {
-  void rebuild(Element el) {
-    el.markNeedsBuild();
-    el.visitChildren(rebuild);
-  }
-  (context as Element).visitChildren(rebuild);
-}
+
   void editFinanceNew() async {
     try{
     final AuthDioUtils listFinance = AuthDioUtils();

@@ -37,8 +37,6 @@ class _AddFinanceState extends State<AddFinance> {
           }
         });
 
-//final dropdown = DropdownButton(items: _createList());
-
       } else {
         print(response.statusCode);
       }

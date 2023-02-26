@@ -47,7 +47,6 @@ class CustomSearchDelegate extends SearchDelegate{
      }
   }
  
- 
   List<String> searchTerms = [
     "test",
     "search"
