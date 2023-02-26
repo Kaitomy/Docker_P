@@ -1,16 +1,146 @@
-# flutter_application_1
+#ПРАКТИЧЕСКАЯ РАБОТА №2
 
-A new Flutter project.
+Тема: Создание приложения с использованием API.
 
-## Getting Started
+Цель работы: Создать приложение, к ранее созданной API при помощи пакета Conduit на заданную тему – учет финансов. Необходимые функции к реализации:
 
-This project is a starting point for a Flutter application.
+1.	Авторизация через API
 
-A few resources to get you started if this is your first Flutter project:
+2.	Выгрузка данных через API
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+3.	Редактирование профиля
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+4.	Логическое физическое удаление
+
+5.	Поиск
+
+6.	Добавление данных
+
+7.	Редактирование данных
+
+8.	Фильтрация
+
+9.	Использовать следующие пакеты bloc/cubit, freezed, 
+
+10.	Использовать interceptor
+
+Ход работы: 
+
+Для создания авторизации и регистрации пользователя через API были написаны методы, возвращающие true или false в зависимости от того, успешный ли был запрос к БД.
+
+ ![image](https://user-images.githubusercontent.com/99449281/221385750-46d9884d-3a9f-46d7-a560-7461e63d2b7b.png)
+
+Рисунок 33.Регистрация пользователя
+
+ ![image](https://user-images.githubusercontent.com/99449281/221385757-7f5ff2c3-8bfa-4a27-bd25-f8a544640359.png)
+
+Рисунок 34.Авторизация пользователя
+
+Для того, чтобы данное взаимодействие успешно работало, необходимо подключить Dio. Время на подключение необходимо указать в формате const Duration(milliseconds: 3500). Также, чтобы можно было отправлять запросы к API с телом запроса Json, необходимо добавить    dio.options.headers["content-type"] = "application/json";
+
+![image](https://user-images.githubusercontent.com/99449281/221385765-44b32f91-e3ee-445e-a5a8-eac3113e7c56.png)
+ 
+Рисунок 35.Настройка Dio
+
+За обработку всех запросов, и добавление в ним bearer токена отвечает AuthInterceptor.
+
+ ![image](https://user-images.githubusercontent.com/99449281/221385771-51dd7300-47ff-40ee-9217-73ec252222fb.png)
+
+Рисунок 36. AuthInterceptor
+
+В результате создания авторизации и регистрации получились данные страницы формы.
+
+ ![image](https://user-images.githubusercontent.com/99449281/221385776-be6fa8f4-f28b-4505-89b7-d62646ae4b34.png)
+
+Рисунок 37. Регистрация
+
+ ![image](https://user-images.githubusercontent.com/99449281/221385777-d201e151-efac-46e5-a93c-d8d885d92867.png)
+
+Рисунок 38. Авторизация
+
+Выгрузка данных через API осуществляется путем записи всех необходимых элементов в список. Все элементы записываются в jsonList, принимающий тип Map.На основе этого списка и строятся карточки с данными.
+ 
+ ![image](https://user-images.githubusercontent.com/99449281/221385781-8f5d1227-a717-4b1d-bdb7-32da64ba609c.png)
+
+Рисунок 39. Выгрузка данных
+ 
+ ![image](https://user-images.githubusercontent.com/99449281/221385783-f5cb2a94-0811-47c2-ae86-b33126782acb.png)
+
+Рисунок 40. Создание карточек
+
+На AppBar располагаются кнопки, отвечающие за действия над данными – редактирование, поиск, отображение удаленных и обычных финансовых сводок. Рядом с каждым элементом списка расположена кнопка удаления. В зависимости от списка, эта кнопка будет действовать либо как физическое, либо как логическое удаление
+ 
+ ![image](https://user-images.githubusercontent.com/99449281/221385790-bef098f3-910f-4aef-af28-c917cd59b1ff.png)
+
+Рисунок 41. Логическое и физическое удаление
+
+Фильтрация данных осуществляется также с помощью выгрузки данных в jsonList, но уже с фильтром только логически удаленные.
+
+ ![image](https://user-images.githubusercontent.com/99449281/221385794-adb474ed-83fe-4cef-898a-4818ac092fe3.png)
+
+Рисунок 42. Выгрузка данных с фильтром
+
+Поиск осуществляется с помощью кастомного поискового класса CustomSearchDelegate. Он изменяет и выводит список только тех элементов, которые подходят под введенный поиск.
+ 
+ ![image](https://user-images.githubusercontent.com/99449281/221385799-b6ac85cf-1f61-41e4-a269-d1bc5b42ea25.png)
+
+Рисунок 43. Поиск
+
+Результат создания поиска, вывода и фильтрации:
+
+ ![image](https://user-images.githubusercontent.com/99449281/221385805-804c853f-9ab8-430a-ac52-3fbe1e0cbf58.png)
+
+Рисунок 44. Вывод данных
+ 
+ ![image](https://user-images.githubusercontent.com/99449281/221385807-e272e8dd-cce4-4be8-b171-eb97933b689a.png)
+
+Рисунок 45. Поиск данных
+ 
+ ![image](https://user-images.githubusercontent.com/99449281/221385809-89acf0df-9acf-4325-8b6d-6ad13ddd1e19.png)
+
+Рисунок 46. Удаленные сводки
+
+Данные для отображения профиля получаются через Cubit. Данные выводятся определенного пользователя. При редактировании данных если пароль новый заполнен, значит происходит полное обновление профиля. Если данные поля остаются пустыми – значит обновляются только почта и логин.
+ 
+ ![image](https://user-images.githubusercontent.com/99449281/221385812-c642a6b4-79e0-4ba6-a759-885f760ce5df.png)
+
+Рисунок 47. Cubit
+ 
+ ![image](https://user-images.githubusercontent.com/99449281/221385815-9c171526-42cd-48f5-91ce-4e7ad8f24477.png)
+
+Рисунок 48. Редактирование профиля
+ 
+ ![image](https://user-images.githubusercontent.com/99449281/221385823-ee3bb456-2f1c-4203-b88f-1af09bc6c719.png)
+
+Рисунок 49. Редактирование профиля
+
+Добавление данных происходит с экрана добавления, который обозначен знаком +. Выбор категории финансовой сводки происходит посредством выпадающего списка.
+ 
+ ![image](https://user-images.githubusercontent.com/99449281/221385828-aa1de620-6788-43c6-9c74-086a3fc1c51b.png)
+
+Рисунок 50. Метод добавления
+ 
+ ![image](https://user-images.githubusercontent.com/99449281/221385830-ca03a3a6-19fc-4763-bd3b-8c83fabd2992.png)
+
+Рисунок 51. Создание списка
+ 
+ ![image](https://user-images.githubusercontent.com/99449281/221385834-f4c276a2-add2-4ebd-bed0-4a3be6148048.png)
+
+Рисунок 52. Создание финансовой сводки
+
+Последний необходимый пункт – редактирование сводок. На данную страницу можно перейти с вкладки финансы нажав на кнопку с иконкой ручки на AppBar. Данные для изменения, а также выбор изменяемой сводки осуществляется посредством выбора из выпадающего списка.
+
+ ![image](https://user-images.githubusercontent.com/99449281/221385839-0efb9d11-34dd-4a11-b9fe-1d69b17c2abb.png)
+
+Рисунок 53. Редактирование выбранной сводки
+ 
+ ![image](https://user-images.githubusercontent.com/99449281/221385840-9a35b520-da9b-4faa-a720-4b47519975f0.png)
+
+Рисунок 54. Вывод и изменение данных
+ 
+ ![image](https://user-images.githubusercontent.com/99449281/221385846-0afbaf42-fd6a-4145-bed0-6358a72b3254.png)
+
+Рисунок 55. Редактирование и выбор
+
+Вывод: В результате выполнения данной работы, было создано приложение для взаимодействия с ранее созданной API для работы с финансовыми сводками и пользователями в данном сервисе. Были реализованы все указанные изначально функции, а также добавлена регистрация. Приложение имеет схожий интерфейс и дизайн для всех экранов.
+
