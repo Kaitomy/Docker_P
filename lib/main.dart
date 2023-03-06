@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_9/emailSign.dart';
 import 'package:flutter_application_9/firebase_options.dart';
+import 'package:flutter_application_9/welcome.dart';
+import 'package:go_router/go_router.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,40 +20,46 @@ Future<void> main() async {
 //   print(value.user?.email);
 //   print(value.user?.uid);
 // });
+  
 
-final user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: 'isip_k.s.obrazcova@mpt.ru', password: '06_Pony_07');
-print(user.user?.email);
-   print(user.user?.uid);
-  runApp(const MyApp());
+  //  MyApp.emailLink = window.location.href;
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+   MyApp({super.key});
+  
+  final GoRouter _newRouter = GoRouter(
+  routes: [
+    GoRoute(
+      path: "/",
+      builder: (context, state) =>  const Welcome(),
+      routes: [
+        GoRoute(
+          path: "email",
+          builder: (context, state) => const EmailAuth(),
+        )
+      ],
+    )
+  ],
+);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      routerConfig: _newRouter,
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
+
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
